@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AORALAND</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&family=Playfair+Display:wght@600&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', 'Quicksand', sans-serif;
+            background: linear-gradient(180deg, #e8d5e0 0%, #d8c8d8 50%, #c8b8c8 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #5a5a5a;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .language-toggle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 4px;
+            border-radius: 20px;
+        }
+
+        .lang-btn {
+            padding: 6px 14px;
+            background: transparent;
+            border: none;
+            border-radius: 15px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #7a7a7a;
+            font-weight: 500;
+        }
+
+        .lang-btn.active {
+            background: #7a9cb8;
+            color: white;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 600;
+            color: #7a9cb8;
+            letter-spacing: 6px;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            font-size: 0.95rem;
+            color: #8a8a8a;
+            letter-spacing: 2px;
+            font-weight: 300;
+        }
+
+        .controls-wrapper {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 25px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(122, 156, 184, 0.2);
+        }
+
+        .category-title {
+            font-size: 1rem;
+            color: #7a9cb8;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .manage-categories-btn {
+            padding: 8px 20px;
+            background: transparent;
+            color: #7a9cb8;
+            border: 1.5px solid #7a9cb8;
+            border-radius: 18px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .manage-categories-btn:hover {
+            background: #7a9cb8;
+            color: white;
+        }
+
+        .category-filter {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .filter-btn {
+            padding: 10px 24px;
+            background: rgba(255, 255, 255, 0.6);
+            color: #7a7a7a;
+            border: 1.5px solid rgba(122, 156, 184, 0.3);
+            border-radius: 20px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .filter-btn.active {
+            background: #7a9cb8;
+            color: white;
+            border-color: #7a9cb8;
+        }
+
+        .view-type-filter {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 18px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(122, 156, 184, 0.15);
+        }
+
+        .view-type-btn {
+            flex: 1;
+            padding: 8px 14px;
+            background: rgba(255, 255, 255, 0.5);
+            color: #7a7a7a;
+            border: 1.5px solid rgba(122, 156, 184, 0.25);
+            border-radius: 18px;
+            font-family: inherit;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .view-type-btn:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .view-type-btn.active {
+            background: linear-gradient(135deg, #d8c8d8 0%, #c8b8c8 100%);
+            color: white;
+            border-color: #c8b8c8;
+        }
+
+        .add-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #a8c0d8 0%, #7a9cb8 100%);
+            color: white;
+            border: none;
+            border-radius: 22px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .portfolio-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .portfolio-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #e8d5e0 0%, #d8c8d8 100%);
+        }
+
+        .card-content {
+            padding: 18px;
+        }
+
+        .card-text-only .card-content {
+            padding: 22px 18px;
+        }
+
+        .card-category {
+            display: inline-block;
+            padding: 4px 10px;
+            background: linear-gradient(135deg, #a8c0d8 0%, #7a9cb8 100%);
+            color: white;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 8px;
+        }
+
+        .card-tag {
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-size: 0.65rem;
+            font-weight: 500;
+        }
+
+        .card-tag.platform-tag {
+            background: rgba(168, 192, 216, 0.25);
+            color: #5a8ab8;
+        }
+
+        .card-tag.data-tag {
+            background: rgba(255, 182, 193, 0.25);
+            color: #d87093;
+        }
+
+        .card-tag.custom-tag {
+            background: rgba(200, 184, 200, 0.3);
+            color: #7a7a7a;
+        }
+
+        .card-title {
+            font-size: 1.05rem;
+            color: #5a5a5a;
+            margin-bottom: 6px;
+            font-weight: 600;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-description {
+            color: #8a8a8a;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-link {
+            color: #7a9cb8;
+            text-decoration: none;
+            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 5px 10px;
+            border: 1.5px solid #7a9cb8;
+            border-radius: 12px;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .card-link:hover {
+            background: #7a9cb8;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(200, 184, 200, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 35px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.6rem;
+            cursor: pointer;
+            color: #a8a8a8;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: #7a9cb8;
+            color: white;
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: #7a9cb8;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(122, 156, 184, 0.2);
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #6a6a6a;
+            font-size: 0.9rem;
+        }
+
+        input[type="text"],
+        input[type="url"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1.5px solid rgba(122, 156, 184, 0.3);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            background: rgba(255, 255, 255, 0.8);
+            transition: border 0.2s;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #7a9cb8;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            line-height: 1.6;
+        }
+
+        .tags-input-wrapper {
+            background: rgba(248, 248, 255, 0.5);
+            border: 1.5px solid rgba(122, 156, 184, 0.3);
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .tags-display {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 10px;
+            min-height: 24px;
+        }
+
+        .tag-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .tag-item.platform-tag {
+            background: rgba(168, 192, 216, 0.3);
+            color: #5a8ab8;
+        }
+
+        .tag-item.data-tag {
+            background: rgba(255, 182, 193, 0.3);
+            color: #d87093;
+        }
+
+        .tag-item.custom-tag {
+            background: rgba(200, 184, 200, 0.3);
+            color: #7a7a7a;
+        }
+
+        .tag-remove {
+            cursor: pointer;
+            color: inherit;
+            opacity: 0.7;
+            font-size: 0.95rem;
+        }
+
+        .tag-remove:hover {
+            opacity: 1;
+        }
+
+        .tag-input-row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .tag-type-select {
+            width: 120px;
+            padding: 7px 10px;
+            border: 1.5px solid rgba(122, 156, 184, 0.3);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            background: white;
+        }
+
+        .tag-input {
+            flex: 1;
+            padding: 7px 10px;
+            border: 1.5px solid rgba(122, 156, 184, 0.3);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            background: white;
+        }
+
+        .add-tag-btn {
+            width: 32px;
+            height: 32px;
+            background: #7a9cb8;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .add-tag-btn:hover {
+            background: #6a8ca8;
+        }
+
+        .tag-presets {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .preset-btn {
+            padding: 4px 10px;
+            background: white;
+            color: #7a7a7a;
+            border: 1px solid rgba(122, 156, 184, 0.3);
+            border-radius: 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .preset-btn:hover {
+            background: rgba(122, 156, 184, 0.1);
+        }
+
+        .image-upload-area {
+            border: 2px dashed #a8c0d8;
+            background: rgba(248, 248, 255, 0.5);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .image-upload-area:hover {
+            background: rgba(248, 248, 255, 0.8);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            opacity: 0.6;
+        }
+
+        .upload-text {
+            color: #7a9cb8;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .upload-hint {
+            color: #a8a8a8;
+            font-size: 0.8rem;
+        }
+
+        #imageInput {
+            display: none;
+        }
+
+        .image-preview-container {
+            margin-top: 15px;
+            position: relative;
+        }
+
+        .image-preview {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 12px;
+            background: white;
+        }
+
+        .remove-image-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 8px 14px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #ff6b7a;
+            border: 1.5px solid #ff6b7a;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .remove-image-btn:hover {
+            background: #ff6b7a;
+            color: white;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 18px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #a8c0d8 0%, #7a9cb8 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.8);
+            color: #7a7a7a;
+            border: 1.5px solid rgba(122, 156, 184, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: white;
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, #ff9a9e 0%, #ff6b7a 100%);
+            color: white;
+        }
+
+        .btn-delete:hover {
+            transform: translateY(-2px);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 30px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            grid-column: 1/-1;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .empty-state-text {
+            font-size: 1rem;
+            color: #8a8a8a;
+        }
+
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .category-item {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(248, 248, 255, 0.6);
+            border-radius: 12px;
+        }
+
+        .category-item input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1.5px solid rgba(122, 156, 184, 0.3);
+            border-radius: 10px;
+            font-family: inherit;
+        }
+
+        .category-item button {
+            padding: 8px 14px;
+            background: rgba(255, 107, 122, 0.1);
+            color: #ff6b7a;
+            border: 1.5px solid #ff6b7a;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .category-item button:hover {
+            background: #ff6b7a;
+            color: white;
+        }
+
+        .add-category-btn {
+            width: 100%;
+            padding: 12px;
+            background: rgba(168, 192, 216, 0.2);
+            border: 2px dashed #a8c0d8;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: #7a9cb8;
+            transition: all 0.2s;
+        }
+
+        .add-category-btn:hover {
+            background: rgba(168, 192, 216, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3rem;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="language-toggle">
+                <button class="lang-btn active" onclick="switchLanguage('ja')">日本語</button>
+                <button class="lang-btn" onclick="switchLanguage('zh')">中文</button>
+            </div>
+            <div class="logo">AORALAND</div>
+            <p class="tagline" id="tagline">瞬間のコレクション</p>
+        </header>
+
+        <div class="controls-wrapper">
+            <div class="category-header">
+                <div class="category-title" id="categoryTitle">カテゴリー</div>
+                <button class="manage-categories-btn" onclick="openManageCategories()" id="manageCatBtn">管理</button>
+            </div>
+            <div class="category-filter" id="categoryFilter"></div>
+            
+            <div class="view-type-filter">
+                <button class="view-type-btn active" onclick="filterViewType('all')" id="viewAll">すべて</button>
+                <button class="view-type-btn" onclick="filterViewType('image')" id="viewImage">画像作品</button>
+                <button class="view-type-btn" onclick="filterViewType('text')" id="viewText">テキスト作品</button>
+            </div>
+            
+            <button class="add-btn" onclick="openAddModal()" id="addBtn">+ 新しい作品</button>
+        </div>
+
+        <div class="portfolio-grid" id="portfolioGrid"></div>
+    </div>
+
+    <div class="modal" id="manageCategoriesModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeManageCategories()">×</span>
+            <h2 class="modal-title" id="manageCatTitle">カテゴリー管理</h2>
+            <div class="category-list" id="categoryList"></div>
+            <button class="add-category-btn" onclick="addNewCategory()" id="addCatBtn">+ カテゴリーを追加</button>
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="closeManageCategories()" id="catCancelBtn">キャンセル</button>
+                <button class="btn btn-primary" onclick="saveCategories()" id="catSaveBtn">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="addModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeAddModal()">×</span>
+            <h2 class="modal-title" id="modalTitle">新しい作品</h2>
+            <form id="portfolioForm" onsubmit="savePortfolio(event)">
+                <div class="form-group">
+                    <label for="category" id="labelCategory">カテゴリー</label>
+                    <select id="category" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="title"><span id="labelTitle">タイトル</span> <span style="color: #ff6b7a;">*</span></label>
+                    <input type="text" id="title" placeholder="作品のタイトルを入力" required>
+                </div>
+                <div class="form-group">
+                    <label for="description"><span id="labelDesc">説明</span> <span style="color: #a8a8a8; font-size: 0.85rem;" id="optional1">(任意)</span></label>
+                    <textarea id="description" placeholder="作品の説明を入力..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label><span id="labelTags">カスタムタグ</span> <span style="color: #a8a8a8; font-size: 0.85rem;" id="optional2">(任意)</span></label>
+                    <div class="tags-input-wrapper">
+                        <div class="tags-display" id="tagsDisplay"></div>
+                        <div class="tag-input-row">
+                            <select id="tagType" class="tag-type-select">
+                                <option value="platform">プラットフォーム</option>
+                                <option value="data">データ量</option>
+                                <option value="custom">カスタム</option>
+                            </select>
+                            <input type="text" id="tagInput" class="tag-input" placeholder="タグを入力してEnter">
+                            <button type="button" class="add-tag-btn" onclick="addTag()">+</button>
+                        </div>
+                        <div class="tag-presets">
+                            <button type="button" class="preset-btn" onclick="addPresetTag('platform', 'Instagram')">Instagram</button>
+                            <button type="button" class="preset-btn" onclick="addPresetTag('platform', 'TikTok')">TikTok</button>
+                            <button type="button" class="preset-btn" onclick="addPresetTag('platform', 'YouTube')">YouTube</button>
+                            <button type="button" class="preset-btn" onclick="addPresetTag('data', '10w')">10w</button>
+                            <button type="button" class="preset-btn" onclick="addPresetTag('data', '30w')">30w</button>
+                            <button type="button" class="preset-btn" onclick="addPresetTag('data', '50w')">50w</button>
+                            <button type="button" class="preset-btn" onclick="addPresetTag('data', '100w')">100w</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label><span id="labelImage">画像</span> <span style="color: #a8a8a8; font-size: 0.85rem;" id="optional3">(任意)</span></label>
+                    <div class="image-upload-area" id="uploadArea" onclick="document.getElementById('imageInput').click()">
+                        <div class="upload-icon">🌙</div>
+                        <div class="upload-text" id="uploadText">クリック / ドラッグ / Ctrl+V で画像を追加</div>
+                        <div class="upload-hint" id="uploadHint">JPG、PNG、GIF対応</div>
+                    </div>
+                    <input type="file" id="imageInput" accept="image/*">
+                    <div class="image-preview-container" id="previewContainer" style="display: none;">
+                        <img id="imagePreview" class="image-preview">
+                        <button type="button" class="remove-image-btn" onclick="removeImage()" id="removeImgBtn">削除</button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="link"><span id="labelLink">リンク</span> <span style="color: #a8a8a8; font-size: 0.85rem;" id="optional4">(任意)</span></label>
+                    <input type="url" id="link" placeholder="https://example.com">
+                </div>
+                
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddModal()" id="cancelBtn">キャンセル</button>
+                    <button type="submit" class="btn btn-primary" id="saveBtn">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeDetailModal()">×</span>
+            <div id="detailContent"></div>
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="editPortfolio()" id="editBtn">編集</button>
+                <button class="btn btn-delete" onclick="deletePortfolio()" id="deleteBtn">削除</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let portfolios = [];
+        let categories = ['デザイン', '開発', 'ライティング', '写真', 'その他'];
+        let currentFilter = 'all';
+        let currentViewType = 'all';
+        let currentEditId = null;
+        let currentViewId = null;
+        let currentImageData = null;
+        let currentTags = [];
+        let currentLang = 'ja';
+
+        // Check if persistent storage is available, otherwise use localStorage
+        const hasStorage = typeof window.storage !== 'undefined';
+        
+        // Storage wrapper functions
+        async function storageGet(key) {
+            if (hasStorage) {
+                try {
+                    return await window.storage.get(key);
+                } catch (e) {
+                    console.error('Storage get error:', e);
+                    return null;
+                }
+            } else {
+                const value = localStorage.getItem(key);
+                return value ? { value } : null;
+            }
+        }
+
+        async function storageSet(key, value) {
+            if (hasStorage) {
+                try {
+                    await window.storage.set(key, value);
+                    return true;
+                } catch (e) {
+                    console.error('Storage set error:', e);
+                    return false;
+                }
+            } else {
+                try {
+                    localStorage.setItem(key, value);
+                    return true;
+                } catch (e) {
+                    console.error('LocalStorage set error:', e);
+                    return false;
+                }
+            }
+        }
+
+        async function storageDelete(key) {
+            if (hasStorage) {
+                try {
+                    await window.storage.delete(key);
+                } catch (e) {
+                    console.error('Storage delete error:', e);
+                }
+            } else {
+                localStorage.removeItem(key);
+            }
+        }
+
+        async function storageList(prefix) {
+            if (hasStorage) {
+                try {
+                    return await window.storage.list(prefix);
+                } catch (e) {
+                    console.error('Storage list error:', e);
+                    return { keys: [] };
+                }
+            } else {
+                const keys = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key.startsWith(prefix)) {
+                        keys.push(key);
+                    }
+                }
+                return { keys };
+            }
+        }
+
+        const texts = {
+            ja: {
+                tagline: '瞬間のコレクション',
+                categoryTitle: 'カテゴリー',
+                manage: '管理',
+                all: 'すべて',
+                imageWorks: '画像作品',
+                textWorks: 'テキスト作品',
+                addWork: '+ 新しい作品',
+                manageCat: 'カテゴリー管理',
+                addCat: '+ カテゴリーを追加',
+                cancel: 'キャンセル',
+                save: '保存',
+                newWork: '新しい作品',
+                editWork: '作品を編集',
+                category: 'カテゴリー',
+                title: 'タイトル',
+                description: '説明',
+                optional: '(任意)',
+                customTags: 'カスタムタグ',
+                image: '画像',
+                link: 'リンク',
+                uploadText: 'クリック / ドラッグ / Ctrl+V で画像を追加',
+                uploadHint: 'JPG、PNG、GIF対応',
+                removeImg: '削除',
+                edit: '編集',
+                delete: '削除',
+                noWorks: '作品がまだありません。最初の作品を作成しましょう！',
+                viewLink: 'リンクを開く',
+                platform: 'プラットフォーム',
+                dataVolume: 'データ量',
+                custom: 'カスタム',
+                enterTag: 'タグを入力してEnter',
+                titlePlaceholder: '作品のタイトルを入力',
+                descPlaceholder: '作品の説明を入力...',
+                confirmDelete: 'この作品を削除してもよろしいですか？',
+                confirmDeleteCat: 'このカテゴリーを削除しますか？このカテゴリーの作品は削除されません。',
+                needOneCat: '少なくとも1つのカテゴリーが必要です！',
+                enterCatName: '新しいカテゴリー名を入力：',
+                catSaved: 'カテゴリーが保存されました！'
+            },
+            zh: {
+                tagline: '记录每个精彩瞬间',
+                categoryTitle: '分类',
+                manage: '管理',
+                all: '全部',
+                imageWorks: '图片作品',
+                textWorks: '文本作品',
+                addWork: '+ 添加作品',
+                manageCat: '分类管理',
+                addCat: '+ 添加分类',
+                cancel: '取消',
+                save: '保存',
+                newWork: '添加作品',
+                editWork: '编辑作品',
+                category: '分类',
+                title: '标题',
+                description: '说明',
+                optional: '(可选)',
+                customTags: '自定义标签',
+                image: '图片',
+                link: '链接',
+                uploadText: '点击 / 拖拽 / Ctrl+V 添加图片',
+                uploadHint: '支持 JPG、PNG、GIF',
+                removeImg: '删除',
+                edit: '编辑',
+                delete: '删除',
+                noWorks: '还没有作品，快来创建第一个吧！',
+                viewLink: '查看链接',
+                platform: '平台来源',
+                dataVolume: '数据量',
+                custom: '自定义',
+                enterTag: '输入标签后按回车',
+                titlePlaceholder: '输入作品标题',
+                descPlaceholder: '输入作品描述...',
+                confirmDelete: '确定要删除这个作品吗？',
+                confirmDeleteCat: '确定删除这个分类吗？该分类下的作品不会被删除。',
+                needOneCat: '至少需要保留一个分类！',
+                enterCatName: '输入新分类名称：',
+                catSaved: '分类已保存！'
+            }
+        };
+
+        function switchLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent === (lang === 'ja' ? '日本語' : '中文'));
+            });
+            updateTexts();
+            renderCategoryFilter();
+            renderPortfolios();
+        }
+
+        function updateTexts() {
+            const t = texts[currentLang];
+            document.getElementById('tagline').textContent = t.tagline;
+            document.getElementById('categoryTitle').textContent = t.categoryTitle;
+            document.getElementById('manageCatBtn').textContent = t.manage;
+            document.getElementById('viewAll').textContent = t.all;
+            document.getElementById('viewImage').textContent = t.imageWorks;
+            document.getElementById('viewText').textContent = t.textWorks;
+            document.getElementById('addBtn').textContent = t.addWork;
+            document.getElementById('manageCatTitle').textContent = t.manageCat;
+            document.getElementById('addCatBtn').textContent = t.addCat;
+            document.getElementById('catCancelBtn').textContent = t.cancel;
+            document.getElementById('catSaveBtn').textContent = t.save;
+            document.getElementById('labelCategory').textContent = t.category;
+            document.getElementById('labelTitle').textContent = t.title;
+            document.getElementById('labelDesc').textContent = t.description;
+            document.getElementById('optional1').textContent = t.optional;
+            document.getElementById('optional2').textContent = t.optional;
+            document.getElementById('optional3').textContent = t.optional;
+            document.getElementById('optional4').textContent = t.optional;
+            document.getElementById('labelTags').textContent = t.customTags;
+            document.getElementById('labelImage').textContent = t.image;
+            document.getElementById('labelLink').textContent = t.link;
+            document.getElementById('uploadText').textContent = t.uploadText;
+            document.getElementById('uploadHint').textContent = t.uploadHint;
+            document.getElementById('removeImgBtn').textContent = t.removeImg;
+            document.getElementById('cancelBtn').textContent = t.cancel;
+            document.getElementById('saveBtn').textContent = t.save;
+            document.getElementById('editBtn').textContent = t.edit;
+            document.getElementById('deleteBtn').textContent = t.delete;
+            document.getElementById('title').placeholder = t.titlePlaceholder;
+            document.getElementById('description').placeholder = t.descPlaceholder;
+            document.getElementById('tagInput').placeholder = t.enterTag;
+            
+            const tagType = document.getElementById('tagType');
+            tagType.options[0].textContent = t.platform;
+            tagType.options[1].textContent = t.dataVolume;
+            tagType.options[2].textContent = t.custom;
+        }
+
+        async function init() {
+            await loadData();
+            renderCategoryFilter();
+            renderPortfolios();
+            setupEvents();
+        }
+
+        async function loadData() {
+            try {
+                const catResult = await storageGet('aoraland-categories');
+                if (catResult?.value) {
+                    categories = JSON.parse(catResult.value);
+                }
+            } catch (e) {
+                console.error('Load categories error:', e);
+            }
+
+            try {
+                const result = await storageList('aoraland:');
+                if (result?.keys && result.keys.length > 0) {
+                    const promises = result.keys.map(key => storageGet(key));
+                    const results = await Promise.all(promises);
+                    portfolios = results
+                        .filter(r => r?.value)
+                        .map(r => JSON.parse(r.value))
+                        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                }
+            } catch (e) {
+                console.error('Load portfolios error:', e);
+                portfolios = [];
+            }
+        }
+
+        async function saveToStorage(portfolio) {
+            try {
+                console.log('Saving portfolio:', portfolio);
+                const success = await storageSet(`aoraland:${portfolio.id}`, JSON.stringify(portfolio));
+                if (success) {
+                    console.log('Portfolio saved successfully');
+                    return true;
+                } else {
+                    console.error('Failed to save portfolio');
+                    alert('保存失败，请重试 / Save failed, please retry');
+                    return false;
+                }
+            } catch (e) {
+                console.error('Save error:', e);
+                alert('保存失败：' + e.message + ' / Save failed: ' + e.message);
+                return false;
+            }
+        }
+
+        async function deleteFromStorage(id) {
+            try {
+                await storageDelete(`aoraland:${id}`);
+            } catch (e) {
+                console.error('Delete error:', e);
+            }
+        }
+
+        async function saveCategoriesToStorage() {
+            try {
+                await storageSet('aoraland-categories', JSON.stringify(categories));
+            } catch (e) {
+                console.error('Save categories error:', e);
+            }
+        }
+
+        function renderCategoryFilter() {
+            const t = texts[currentLang];
+            const html = `
+                <button class="filter-btn ${currentFilter === 'all' ? 'active' : ''}" onclick="filterCategory('all')">${t.all}</button>
+                ${categories.map(cat => `
+                    <button class="filter-btn ${currentFilter === cat ? 'active' : ''}" onclick="filterCategory('${cat}')">${cat}</button>
+                `).join('')}
+            `;
+            document.getElementById('categoryFilter').innerHTML = html;
+        }
+
+        function filterCategory(cat) {
+            currentFilter = cat;
+            renderCategoryFilter();
+            renderPortfolios();
+        }
+
+        function filterViewType(type) {
+            currentViewType = type;
+            document.querySelectorAll('.view-type-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            renderPortfolios();
+        }
+
+        function renderPortfolios() {
+            const t = texts[currentLang];
+            let filtered = currentFilter === 'all' ? portfolios : portfolios.filter(p => p.category === currentFilter);
+            
+            if (currentViewType === 'image') {
+                filtered = filtered.filter(p => p.image);
+            } else if (currentViewType === 'text') {
+                filtered = filtered.filter(p => !p.image);
+            }
+
+            const grid = document.getElementById('portfolioGrid');
+            
+            if (!filtered.length) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">✨</div>
+                        <div class="empty-state-text">${t.noWorks}</div>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(p => {
+                const tagsHtml = p.tags?.length ? `
+                    <div class="card-tags">
+                        ${p.tags.map(tag => `<span class="card-tag ${tag.type}-tag">${tag.text}</span>`).join('')}
+                    </div>
+                ` : '';
+                
+                return `
+                    <div class="portfolio-card ${!p.image ? 'card-text-only' : ''}" onclick="viewPortfolio('${p.id}')">
+                        ${p.image ? `<img src="${p.image}" class="card-image" alt="${p.title}">` : ''}
+                        <div class="card-content">
+                            <div class="card-category">${p.category}</div>
+                            ${tagsHtml}
+                            <div class="card-title">${p.title}</div>
+                            ${p.description ? `<div class="card-description">${p.description}</div>` : ''}
+                            ${p.link ? `<a href="${p.link}" class="card-link" onclick="event.stopPropagation()" target="_blank">${currentLang === 'ja' ? 'リンク' : '链接'} →</a>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openManageCategories() {
+            renderCategoryManagement();
+            document.getElementById('manageCategoriesModal').classList.add('active');
+        }
+
+        function closeManageCategories() {
+            document.getElementById('manageCategoriesModal').classList.remove('active');
+        }
+
+        function renderCategoryManagement() {
+            const t = texts[currentLang];
+            document.getElementById('categoryList').innerHTML = categories.map((cat, i) => `
+                <div class="category-item">
+                    <input type="text" value="${cat}" onchange="categories[${i}]=this.value.trim()">
+                    <button onclick="removeCategory(${i})">${t.delete}</button>
+                </div>
+            `).join('');
+        }
+
+        function removeCategory(index) {
+            const t = texts[currentLang];
+            if (categories.length <= 1) {
+                alert(t.needOneCat);
+                return;
+            }
+            if (confirm(t.confirmDeleteCat)) {
+                categories.splice(index, 1);
+                renderCategoryManagement();
+            }
+        }
+
+        function addNewCategory() {
+            const t = texts[currentLang];
+            const name = prompt(t.enterCatName);
+            if (name?.trim()) {
+                categories.push(name.trim());
+                renderCategoryManagement();
+            }
+        }
+
+        async function saveCategories() {
+            const t = texts[currentLang];
+            await saveCategoriesToStorage();
+            renderCategoryFilter();
+            closeManageCategories();
+            alert(t.catSaved);
+        }
+
+        function openAddModal() {
+            const t = texts[currentLang];
+            currentEditId = null;
+            currentImageData = null;
+            currentTags = [];
+            document.getElementById('modalTitle').textContent = t.newWork;
+            document.getElementById('portfolioForm').reset();
+            document.getElementById('previewContainer').style.display = 'none';
+            document.getElementById('uploadArea').style.display = 'block';
+            renderTags();
+            updateCategorySelect();
+            document.getElementById('addModal').classList.add('active');
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').classList.remove('active');
+        }
+
+        function updateCategorySelect() {
+            document.getElementById('category').innerHTML = categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+        }
+
+        async function savePortfolio(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('title').value.trim();
+            if (!title) {
+                alert('タイトルを入力してください / Please enter a title');
+                return;
+            }
+            
+            const portfolio = {
+                id: currentEditId || Date.now().toString(),
+                category: document.getElementById('category').value,
+                title: title,
+                description: document.getElementById('description').value.trim() || '',
+                image: currentImageData || '',
+                link: document.getElementById('link').value.trim() || '',
+                tags: [...currentTags],
+                createdAt: currentEditId ? portfolios.find(p => p.id === currentEditId).createdAt : new Date().toISOString()
+            };
+
+            console.log('Attempting to save:', portfolio);
+
+            const success = await saveToStorage(portfolio);
+            if (!success) {
+                console.error('Save failed');
+                return;
+            }
+
+            if (currentEditId) {
+                const index = portfolios.findIndex(p => p.id === currentEditId);
+                if (index !== -1) {
+                    portfolios[index] = portfolio;
+                }
+            } else {
+                portfolios.unshift(portfolio);
+            }
+
+            console.log('Current portfolios:', portfolios);
+            
+            closeAddModal();
+            renderPortfolios();
+        }
+
+        function viewPortfolio(id) {
+            const t = texts[currentLang];
+            currentViewId = id;
+            const p = portfolios.find(item => item.id === id);
+            
+            const tagsHtml = p.tags?.length ? `
+                <div class="card-tags" style="margin-bottom:15px">
+                    ${p.tags.map(tag => `<span class="card-tag ${tag.type}-tag">${tag.text}</span>`).join('')}
+                </div>
+            ` : '';
+            
+            document.getElementById('detailContent').innerHTML = `
+                ${p.image ? `<img src="${p.image}" style="width:100%;max-height:400px;object-fit:contain;border-radius:15px;margin-bottom:20px;background:white">` : ''}
+                <div class="card-category" style="margin-bottom:10px">${p.category}</div>
+                ${tagsHtml}
+                <h2 style="font-size:1.8rem;color:#5a5a5a;margin-bottom:15px;font-weight:600">${p.title}</h2>
+                ${p.description ? `<div style="color:#7a7a7a;line-height:1.8;margin-bottom:20px;white-space:pre-wrap">${p.description}</div>` : ''}
+                ${p.link ? `<a href="${p.link}" style="display:inline-flex;align-items:center;gap:8px;color:white;background:linear-gradient(135deg,#a8c0d8 0%,#7a9cb8 100%);text-decoration:none;padding:12px 24px;border-radius:18px" target="_blank">${t.viewLink} →</a>` : ''}
+            `;
+            
+            document.getElementById('detailModal').classList.add('active');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.remove('active');
+        }
+
+        function editPortfolio() {
+            const t = texts[currentLang];
+            const p = portfolios.find(item => item.id === currentViewId);
+            currentEditId = currentViewId;
+            currentImageData = p.image || null;
+            currentTags = p.tags ? [...p.tags] : [];
+            
+            document.getElementById('modalTitle').textContent = t.editWork;
+            updateCategorySelect();
+            document.getElementById('category').value = p.category;
+            document.getElementById('title').value = p.title;
+            document.getElementById('description').value = p.description || '';
+            document.getElementById('link').value = p.link || '';
+            
+            renderTags();
+            
+            if (p.image) {
+                document.getElementById('imagePreview').src = p.image;
+                document.getElementById('previewContainer').style.display = 'block';
+                document.getElementById('uploadArea').style.display = 'none';
+            }
+            
+            closeDetailModal();
+            document.getElementById('addModal').classList.add('active');
+        }
+
+        async function deletePortfolio() {
+            const t = texts[currentLang];
+            if (confirm(t.confirmDelete)) {
+                await deleteFromStorage(currentViewId);
+                portfolios = portfolios.filter(p => p.id !== currentViewId);
+                closeDetailModal();
+                renderPortfolios();
+            }
+        }
+
+        function addTag() {
+            const text = document.getElementById('tagInput').value.trim();
+            const type = document.getElementById('tagType').value;
+            if (text) {
+                currentTags.push({ type, text });
+                renderTags();
+                document.getElementById('tagInput').value = '';
+            }
+        }
+
+        function addPresetTag(type, text) {
+            currentTags.push({ type, text });
+            renderTags();
+        }
+
+        function removeTag(index) {
+            currentTags.splice(index, 1);
+            renderTags();
+        }
+
+        function renderTags() {
+            const html = currentTags.map((tag, i) => `
+                <div class="tag-item ${tag.type}-tag">
+                    <span>${tag.text}</span>
+                    <span class="tag-remove" onclick="removeTag(${i})">×</span>
+                </div>
+            `).join('');
+            document.getElementById('tagsDisplay').innerHTML = html;
+        }
+
+        function setupEvents() {
+            const tagInput = document.getElementById('tagInput');
+            tagInput.addEventListener('keypress', e => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addTag();
+                }
+            });
+
+            const imageInput = document.getElementById('imageInput');
+            imageInput.addEventListener('change', e => {
+                const file = e.target.files[0];
+                if (file) handleImageFile(file);
+            });
+
+            const uploadArea = document.getElementById('uploadArea');
+            uploadArea.addEventListener('dragover', e => {
+                e.preventDefault();
+                uploadArea.style.background = 'rgba(168,192,216,0.2)';
+            });
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.background = '';
+            });
+            uploadArea.addEventListener('drop', e => {
+                e.preventDefault();
+                uploadArea.style.background = '';
+                const file = e.dataTransfer.files[0];
+                if (file?.type.startsWith('image/')) handleImageFile(file);
+            });
+
+            document.addEventListener('paste', e => {
+                if (!document.getElementById('addModal').classList.contains('active')) return;
+                const items = e.clipboardData.items;
+                for (let item of items) {
+                    if (item.type.startsWith('image/')) {
+                        handleImageFile(item.getAsFile());
+                        break;
+                    }
+                }
+            });
+        }
+
+        function handleImageFile(file) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                currentImageData = e.target.result;
+                document.getElementById('imagePreview').src = currentImageData;
+                document.getElementById('previewContainer').style.display = 'block';
+                document.getElementById('uploadArea').style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeImage() {
+            currentImageData = null;
+            document.getElementById('previewContainer').style.display = 'none';
+            document.getElementById('uploadArea').style.display = 'block';
+            document.getElementById('imageInput').value = '';
+        }
+
+        init();
+    </script>
+</body>
+</html>
